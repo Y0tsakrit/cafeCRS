@@ -7,5 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WalletRepository extends JpaRepository<WalletModel, Long> {
-
+    boolean existsByUserIdAndAmountGreaterThanEqual(
+            Long userId,
+            float price
+    );
 }

@@ -24,7 +24,6 @@ public class userController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
-        System.out.println("Received signup request: " + signupRequest.getEmail());
         try {
             UserModel newUser = userService.registerUser(signupRequest.getEmail(), signupRequest.getPassword());
             profileService.createProfile(signupRequest.getFname(), signupRequest.getLname(), newUser.getId());
@@ -38,7 +37,6 @@ public class userController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody SignupRequest loginRequest) {
-        System.out.println("Received login request: " + loginRequest.getEmail());
         Object token = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
         if (token instanceof String) {
             return ResponseEntity.ok(token);

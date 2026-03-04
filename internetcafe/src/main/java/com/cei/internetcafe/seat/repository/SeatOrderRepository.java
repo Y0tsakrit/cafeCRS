@@ -20,4 +20,6 @@ public interface SeatOrderRepository extends JpaRepository<SeatOrderModel, Long>
             LocalDateTime requestEnd,
             LocalDateTime requestStart
     );
+
+    List<SeatOrderModel> findByUserId(long userId);
 }

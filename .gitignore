@@ -16,10 +16,6 @@ temp/
 .env
 .env.local
 .env.*.local
-internetcafe/.mvn/
-internetcafe/mvnw
-internetcafe/mvnw.cmd
-internetcafe/pom.xml
 *.log
 logs/
 HELP.md

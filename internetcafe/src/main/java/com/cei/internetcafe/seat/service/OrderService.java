@@ -4,6 +4,8 @@ import com.cei.internetcafe.seat.model.SeatModel;
 import com.cei.internetcafe.seat.model.SeatOrderModel;
 import com.cei.internetcafe.seat.repository.SeatOrderRepository;
 import com.cei.internetcafe.seat.repository.SeatRepository;
+import com.cei.internetcafe.user.model.WalletModel;
+import com.cei.internetcafe.user.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,10 +18,12 @@ public class OrderService {
 
     private final SeatOrderRepository seatOrderRepository;
     private final SeatRepository seatRepository;
+    private  final WalletRepository walletRepository;
 
-    public OrderService(SeatOrderRepository seatOrderRepository1, SeatRepository seatRepository1) {
-        this.seatOrderRepository = seatOrderRepository1;
-        this.seatRepository = seatRepository1;
+    public OrderService(SeatOrderRepository seatOrderRepository, SeatRepository seatRepository, WalletRepository walletRepository) {
+        this.seatOrderRepository = seatOrderRepository;
+        this.seatRepository = seatRepository;
+        this.walletRepository = walletRepository;
     }
 
     public Map<Long,String> getAvailableOrders(LocalDateTime startTime, LocalDateTime endTime) {
@@ -38,12 +42,42 @@ public class OrderService {
     }
 
     public void createOrder(long userId, long seatId, LocalDateTime dateStart, LocalDateTime dateEnd) {
+        if (dateEnd.isBefore(dateStart)) {
+            throw new IllegalArgumentException("End time must be after start time");
+        }
+
         boolean isBooked = seatOrderRepository.existsBySeatIdAndDateStartLessThanAndDateEndGreaterThan(seatId, dateEnd, dateStart);
         if (isBooked) {
             throw new IllegalStateException("Seat is already booked for the specified time.");
         }
+
+        float price = dateEnd.compareTo(dateStart) * 1.5f;
+        boolean hasSufficientFunds = walletRepository.existsByUserIdAndAmountGreaterThanEqual(userId, price);
+        if (!hasSufficientFunds) {
+            throw new IllegalStateException("Insufficient funds in wallet.");
+        }
+
+        WalletModel wallet = walletRepository.findById(userId).orElseThrow(() -> new IllegalStateException("Wallet not found for user."));
+        wallet.setAmount(wallet.getAmount() - price);
+        walletRepository.save(wallet);
         SeatOrderModel newOrder = new SeatOrderModel(userId, seatId, dateStart, dateEnd);
         seatOrderRepository.save(newOrder);
+    }
+
+    public void cancelOrder(long orderId, long userId) {
+        SeatOrderModel order = seatOrderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalStateException("Order not found."));
+        if (order.getUserId() != userId) {
+            throw new IllegalStateException("User is not authorized to cancel this order.");
+        }
+        if (order.getDateStart().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Cannot cancel an order that has already started.");
+        }
+        float price = order.getDateEnd().compareTo(order.getDateStart()) * 1.5f;
+        WalletModel wallet = walletRepository.findById(userId).orElseThrow(() -> new IllegalStateException("Wallet not found for user."));
+        wallet.setAmount(wallet.getAmount() + price);
+        walletRepository.save(wallet);
+        seatOrderRepository.delete(order);
     }
 
 
