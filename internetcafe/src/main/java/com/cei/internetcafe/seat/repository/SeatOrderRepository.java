@@ -21,5 +21,10 @@ public interface SeatOrderRepository extends JpaRepository<SeatOrderModel, Long>
             LocalDateTime requestStart
     );
 
+    boolean existsBySeatIdAndUserId(
+            long seatId,
+            long userId
+    );
+
     List<SeatOrderModel> findByUserId(long userId);
 }

@@ -8,6 +8,7 @@ package com.cei.internetcafe.user.model;
 
     @Getter
     @Entity
+    @Setter
     @Table(name = "\"User\"")
     public class UserModel {
 
@@ -16,24 +17,25 @@ package com.cei.internetcafe.user.model;
         @Column(name = "id")
         private Long id;
 
-        @Setter
         @Column(name = "email")
         private String email;
 
-        @Setter
         @Column(name = "password")
         private String password;
 
-        // Fixed: camelCase method name and parameter
-        @Setter
+        @Column(name = "role")
+        private String role;
+
+
         @Column(name = "created_at")
         private LocalDateTime createdAt;
 
         public UserModel() {}
 
-        public UserModel(String email, String password, LocalDateTime createdAt) {
+        public UserModel(String email, String password,String role, LocalDateTime createdAt) {
             this.email = email;
             this.password = password;
+            this.role = role;
             this.createdAt = createdAt;
         }
 

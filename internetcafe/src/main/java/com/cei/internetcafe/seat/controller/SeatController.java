@@ -63,7 +63,6 @@ public class SeatController {
         try {
             String token = authorizationHeader.substring(7);
             Claims claims = jwtUtil.extractClaims(token);
-            System.out.println(claims);
             long userId = Long.parseLong(claims.get("id").toString());
             OrderService.cancelOrder(orderId.getOrderId(), userId);
             return "Seat booking cancelled successfully.";

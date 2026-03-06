@@ -1,5 +1,6 @@
 package com.cei.internetcafe.user.service;
 
+import com.cei.internetcafe.user.model.ProfileModel;
 import com.cei.internetcafe.user.model.UserModel;
 import com.cei.internetcafe.user.model.WalletModel;
 import com.cei.internetcafe.user.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,14 +21,16 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private WalletRepository walletRepository;
+    private final JwtUtil jwtUtil;
+    private final WalletRepository walletRepository;
+    private final ProfileService profileService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, WalletRepository walletRepository, ProfileService profileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+        this.walletRepository = walletRepository;
+        this.profileService = profileService;
     }
 
     public UserModel registerUser(String email, String password) {
@@ -38,16 +42,18 @@ public class UserService {
         newUser.setEmail(email);
         newUser.setPassword(passwordEncoder.encode(password)); // Hash password
         newUser.setCreatedAt(LocalDateTime.now());
+        newUser.setRole("USER");
 
         return userRepository.save(newUser);
     }
 
-    public Object loginUser(String email, String password) {
+    public Map<String,String> loginUser(String email, String password) {
         UserModel user = userRepository.findByEmail(email);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            return jwtUtil.generateToken(user);
+            ProfileModel profile = profileService.getProfileById(user.getId());
+            return jwtUtil.generateToken(user,profile);
         }
-        return Optional.empty();
+        return Map.of("error", "Invalid email or password");
     }
 
     public Optional<UserModel> getUserById(Long id) {

@@ -6,7 +6,7 @@ function HomeLogin() {
     return (
     <div className='flex flex-col gap-4 bg-white h-screen'>
         <Dashbord className="items-center"/>
-        <div className='flex flex-row gap-3 ml-19 w-screen'>
+        <div className='flex flex-row gap-3 ml-19'>
             <Subnav/>
             <Subhome/>
         </div>

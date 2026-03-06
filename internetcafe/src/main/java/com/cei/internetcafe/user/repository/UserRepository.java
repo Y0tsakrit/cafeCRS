@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
 
     boolean existsByEmail(String email);
 
+    boolean existsByIdAndRole(Long id, String role);
+
 
     @Modifying
     @Query("UPDATE UserModel u SET u.password = :password WHERE u.id = :id")

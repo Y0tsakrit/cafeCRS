@@ -1,5 +1,6 @@
 package com.cei.internetcafe.util;
 
+import com.cei.internetcafe.user.model.ProfileModel;
 import com.cei.internetcafe.user.model.UserModel;
 import com.cei.internetcafe.user.model.WalletModel;
 import io.jsonwebtoken.Claims;
@@ -27,16 +28,19 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration; // Remove static
 
-    public String generateToken(UserModel user) {
+    public Map<String,String> generateToken(UserModel user, ProfileModel profile) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
-        return Jwts.builder()
+        claims.put("email", user.getEmail());
+        claims.put("fname", profile.getFName());
+        claims.put("lname", profile.getLName());
+        return Map.of("token", Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
-                .compact();
+                .compact());
     }
 
     private Key getSignKey() { // Remove static

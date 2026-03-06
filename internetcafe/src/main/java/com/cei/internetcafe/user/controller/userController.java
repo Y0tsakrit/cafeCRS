@@ -5,9 +5,13 @@ import com.cei.internetcafe.user.model.UserModel;
 import com.cei.internetcafe.user.service.ProfileService;
 import com.cei.internetcafe.user.service.UserService;
 import com.cei.internetcafe.user.service.WalletService;
+import com.cei.internetcafe.util.JwtUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -21,6 +25,8 @@ public class userController {
 
     @Autowired
     private WalletService walletService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
@@ -37,11 +43,19 @@ public class userController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody SignupRequest loginRequest) {
-        Object token = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
-        if (token instanceof String) {
+        Map<String,String> token = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
+        if (token.containsKey("token")) {
             return ResponseEntity.ok(token);
         } else {
             return ResponseEntity.status(401).body("Invalid email or password");
         }
+    }
+
+    @Transactional
+    @GetMapping("/balance")
+    public Map<String,Float> getBalance(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+        Long userId = jwtUtil.extractClaims(token).get("id", Long.class);
+        return Map.of("balance", walletService.getBalance(userId));
     }
 }

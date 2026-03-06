@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiComputerLine } from "react-icons/ri";
 import { Link } from 'react-router-dom';
+import { IoPersonCircleOutline } from "react-icons/io5";
 
 function Navbar() {
 
@@ -48,11 +49,18 @@ function Navbar() {
             >
                 FAQ
             </Link>
-            <Link 
-            to='/signin'
-            className='hover:bg-white px-4 py-2 border-4 border-white rounded-lg text-white hover:text-[#8337D9] transition-colors'>
-            Sign In
-            </Link>
+            {localStorage.getItem('token') ? (
+                <Link to='/mainpage' className='flex items-center gap-2' onClick={() => setActivePage("")}>
+                    <IoPersonCircleOutline className='text-white text-3xl' />
+                </Link>
+            ) : (
+                <Link 
+                    to='/signin'
+                    onClick={() => setActivePage("")}
+                    className='hover:bg-white px-4 py-2 border-4 border-white rounded-lg text-white hover:text-[#8337D9] transition-colors'>
+                    Sign In
+                </Link>
+            )}
         </div>
         </div>
     );

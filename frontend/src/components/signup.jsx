@@ -1,10 +1,54 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
+  const router = useNavigate();
+
   const [isSignIn, setIsSignIn] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const toggleView = () => {
     setIsSignIn(!isSignIn);
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    fetch('http://localhost:8000/api/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem('token', data.token);
+      router('/mainpage');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  };
+
+  const handleSignin = (e) => {
+    fetch('http://localhost:8000/api/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password, fname: firstName, lname: lastName })
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert("Signup successful!");
+    })
+    .catch(error => {
+      error.preventDefault();
+      console.error('Error:', error);
+    });
   };
 
   return (
@@ -25,31 +69,35 @@ function Signup() {
           </button>
         </div>
         {isSignIn ? (
-          <form className='flex flex-col gap-4 w-full'>
+          <form className='flex flex-col gap-4 w-full' onSubmit={handleLogin}>
             <div className='flex flex-col gap-1'>
               <label className='text-black text-left'>Email</label>
-              <input type='text' className='p-2 border border-gray-300 rounded-lg' />
+              <input type='text' className='p-2 border border-gray-300 rounded-lg' value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className='flex flex-col gap-1'>
               <label className='text-black text-left'>Password</label>
-              <input type='password' className='p-2 border border-gray-300 rounded-lg' />
+              <input type='password' className='p-2 border border-gray-300 rounded-lg' value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div className='text-[#8B8989] text-sm text-right cursor-pointer'>Forgot Your Password?</div>
             <button type='submit' className='bg-[#8337D9] mt-4 px-4 py-2 rounded-lg font-bold text-white'>Login</button>
           </form>
         ) : (
-          <form className='flex flex-col gap-4 w-full'>
+          <form className='flex flex-col gap-4 w-full' onSubmit={handleSignin}>
             <div className='flex flex-col gap-1'>
-              <label className='text-black text-left'>Username</label>
-              <input type='text' className='p-2 border border-gray-300 rounded-lg' />
+              <label className='text-black text-left'>First Name</label>
+              <input type='text' className='p-2 border border-gray-300 rounded-lg' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+            </div>
+            <div className='flex flex-col gap-1'>
+              <label className='text-black text-left'>Last Name</label>
+              <input type='text' className='p-2 border border-gray-300 rounded-lg' value={lastName} onChange={(e) => setLastName(e.target.value)} />
             </div>
             <div className='flex flex-col gap-1'>
               <label className='text-black text-left'>Email</label>
-              <input type='text' className='p-2 border border-gray-300 rounded-lg'/>
+              <input type='text' className='p-2 border border-gray-300 rounded-lg' value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className='flex flex-col gap-1'>
               <label className='text-black text-left'>Password</label>
-              <input type='password' className='p-2 border border-gray-300 rounded-lg' />
+              <input type='password' className='p-2 border border-gray-300 rounded-lg' value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <button type='submit' className='bg-[#8337D9] mt-4 px-4 py-2 rounded-lg font-bold text-white'>Register</button>
           </form>
