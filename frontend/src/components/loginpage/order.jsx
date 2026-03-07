@@ -23,7 +23,7 @@ function Order() {
         .then(data => {
             const orders = data.orders || [];
             setBookedSeats(orders);
-            if (orders.length > 0) setSelectedSeatId(orders[0].id);
+            if (orders.length > 0) setSelectedSeatId(orders[0].seatId);
         })
         .catch(err => console.error('Error fetching seats:', err));
     }, []);
