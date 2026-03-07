@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
 public class BookReq {
 
 
-    private long seatId;
+    private List<Long> seatId;
     private LocalDateTime dateStart;
     private LocalDateTime dateEnd;
 
@@ -18,7 +19,7 @@ public class BookReq {
     // Constructors
     public BookReq() {}
 
-    public BookReq(long seatId, LocalDateTime dateStart, LocalDateTime dateEnd) {
+    public BookReq(List<Long> seatId, LocalDateTime dateStart, LocalDateTime dateEnd) {
         this.seatId = seatId;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;

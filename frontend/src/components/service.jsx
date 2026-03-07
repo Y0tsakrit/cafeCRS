@@ -4,7 +4,7 @@ function Service() {
   return (
     <div className='flex flex-col'>
         <Service1/>
-        <div className='bg-white p-10'>
+        <div className='bg-white p-4 md:p-10'>
           <h1 className='mb-6 font-bold text-3xl text-center'>Our Services</h1>
           <p className='mb-8 text-gray-700 text-center'>We offer more than just internet access. From high-performance gaming setups to private rooms and quick bites, our services are designed to support work, play, and everything in between.</p>
           <div className='space-y-10'>

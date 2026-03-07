@@ -8,6 +8,7 @@ import com.cei.internetcafe.user.model.WalletModel;
 import com.cei.internetcafe.user.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,8 @@ public class OrderService {
             throw new IllegalStateException("Seat is already booked for the specified time.");
         }
 
-        float price = dateEnd.compareTo(dateStart) * 1.5f;
+        long hours = Duration.between(dateStart, dateEnd).toMinutes();
+        float price = hours * 1f;
         boolean hasSufficientFunds = walletRepository.existsByUserIdAndAmountGreaterThanEqual(userId, price);
         if (!hasSufficientFunds) {
             throw new IllegalStateException("Insufficient funds in wallet.");

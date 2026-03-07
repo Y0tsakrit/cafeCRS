@@ -25,8 +25,19 @@ function Signup() {
     })
     .then(response => response.json())
     .then(data => {
+      if (!data.token) return;
       localStorage.setItem('token', data.token);
-      router('/mainpage');
+      try {
+        const payload = JSON.parse(atob(data.token.split('.')[1]));
+        const role = payload.role?.toUpperCase();
+        if (role === 'ADMIN' || role === 'STAFF') {
+          router('/staffhome');
+        } else {
+          router('/mainpage');
+        }
+      } catch {
+        router('/mainpage');
+      }
     })
     .catch(error => {
       console.error('Error:', error);
@@ -52,10 +63,10 @@ function Signup() {
   };
 
   return (
-    <div className='flex justify-center items-center bg-[#8337D9] w-screen h-screen'>
-      <div className='relative flex flex-col items-center self-center gap-1 bg-white shadow-lg p-8 rounded-2xl w-[30%]'>
-        <div className='font-bold text-[50px] text-black'>Internet Cafe</div>
-        <div className='text-[#8B8989] text-[30px]'>{isSignIn ? 'Welcome Back!' : 'Welcome!'}</div>
+    <div className='flex justify-center items-center bg-[#8337D9] px-4 w-screen h-screen'>
+      <div className='relative flex flex-col items-center self-center gap-1 bg-white shadow-lg p-6 md:p-8 rounded-2xl w-full sm:w-[80%] md:w-[50%] lg:w-[35%] xl:w-[30%]'>
+        <div className='font-bold text-black md:text-[50px] text-3xl'>Internet Cafe</div>
+        <div className='text-[#8B8989] md:text-[30px] text-xl'>{isSignIn ? 'Welcome Back!' : 'Welcome!'}</div>
         <div className='flex flex-row justify-between bg-[#E5E5E5] p-1 rounded-lg w-full'>
           <button 
             className={`flex-1 rounded-lg text-center p-2 transition-colors duration-300 ${isSignIn ? 'bg-white font-bold text-[#8337D9]' : 'bg-[#E5E5E5] text-black'}`} 

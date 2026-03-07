@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "\"Menu\"")
 @Getter
@@ -25,8 +27,7 @@ public class MenuModel {
     @Column(name = "\"price\"")
     private Float price;
 
-
     @Column(name = "\"createdAt\"")
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
 }

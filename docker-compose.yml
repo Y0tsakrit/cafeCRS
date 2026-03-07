@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./internetcafe
+    container_name: internetcafe-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      OMISE_SECRET_KEY: ${OMISE_SECRET_KEY}
+      OMISE_PUBLIC_KEY: ${OMISE_PUBLIC_KEY}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: internetcafe-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

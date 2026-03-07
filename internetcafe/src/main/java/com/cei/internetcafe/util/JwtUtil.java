@@ -34,6 +34,7 @@ public class JwtUtil {
         claims.put("email", user.getEmail());
         claims.put("fname", profile.getFName());
         claims.put("lname", profile.getLName());
+        claims.put("role", user.getRole() != null ? user.getRole() : "USER");
         return Map.of("token", Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.getEmail())

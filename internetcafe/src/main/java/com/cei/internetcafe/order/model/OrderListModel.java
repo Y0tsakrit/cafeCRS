@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "OrderList")
+@Table(name = "\"OrderList\"")
 @Setter
 @Getter
 public class OrderListModel {
@@ -27,6 +29,6 @@ public class OrderListModel {
     @Column(name = "\"sumPrice\"")
     private Float price;
 
-    @Column(name = "\"createdAt\"")
-    private String createdAt;
+    @Column(name = "\"CreatedAt\"")
+    private LocalDateTime createdAt;
 }

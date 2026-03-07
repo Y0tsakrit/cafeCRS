@@ -20,7 +20,6 @@ public class WalletService {
     }
 
     public Float getBalance(Long userId) {
-        System.out.println(("Getting balance for userId: " + userId));
         Optional<WalletModel> wallet = walletRepository.findByUserId(userId);
         if (wallet.isEmpty()) {
             throw new RuntimeException("Wallet not found for user");

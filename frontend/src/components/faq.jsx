@@ -2,9 +2,9 @@ import React from 'react'
 
 function FAQ() {
   return (
-    <div className='bg-white p-10 w-screen min-h-screen'>
+    <div className='bg-white p-4 md:p-10 w-full min-h-screen'>
       <div className='mx-auto max-w-4xl'>
-        <h1 className='mb-8 font-bold text-[45px]'>Frequently Asked Questions (FAQ)</h1>
+        <h1 className='mb-8 font-bold md:text-[45px] text-2xl'>Frequently Asked Questions (FAQ)</h1>
         <hr /><br/>
         
         {/* Internet and PC Usage Section */}

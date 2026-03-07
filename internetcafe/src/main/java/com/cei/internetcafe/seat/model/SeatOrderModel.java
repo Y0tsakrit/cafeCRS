@@ -29,6 +29,12 @@ public class SeatOrderModel {
     @Column(name = "\"dateEnd\"")
     private LocalDateTime dateEnd;
 
+    @ManyToOne
+    @JoinColumn(name = "\"seatId\"", insertable = false, updatable = false)
+    private SeatModel seat;
+
+
+
     @Column(name = "\"created_at\"", nullable = false)
     private LocalDateTime createdAt;
 

@@ -8,8 +8,11 @@ import co.omise.requests.Request;
 import com.cei.internetcafe.wallet.model.PaymentModel;
 import com.cei.internetcafe.wallet.repository.PaymentRepository;
 import com.cei.internetcafe.user.repository.WalletRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Optional;
 
 
 @Service
@@ -59,5 +62,22 @@ public class PaymentService {
 
         return charge;
 
+    }
+
+    public String getChargeStatus(String chargeId) {
+        Optional<PaymentModel> optional = paymentRepository.findByChargeId(chargeId);
+        if (optional.isEmpty()) return "not_found";
+        try {
+            JsonNode meta = objectMapper.readTree(optional.get().getMetaData());
+            if (meta.has("key")) {
+                // webhook payload: { key: "charge.complete", data: { status: ... } }
+                return meta.get("data").get("status").asText();
+            } else {
+                // initial charge JSON: { status: "pending", ... }
+                return meta.get("status").asText();
+            }
+        } catch (Exception e) {
+            return "pending";
+        }
     }
 }

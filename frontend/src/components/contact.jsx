@@ -3,11 +3,11 @@ import { RiComputerLine } from "react-icons/ri";
 import { Link } from 'react-router-dom';
 function Contact() {
   return (
-    <div className='bg-white p-10 w-screen min-h-screen'>
-        <div className='flex flex-row'>
-            <div className='mx-auto max-w-4xl'>
-                <div className='mb-16'>
-                <h1 className='mb-6 font-bold text-6xl'>Contact Us</h1>
+    <div className='bg-white p-4 md:p-10 w-full min-h-screen'>
+        <div className='flex md:flex-row flex-col gap-8'>
+            <div className='mx-auto md:mx-0 max-w-4xl'>
+                <div className='mb-8 md:mb-16'>
+                <h1 className='mb-6 font-bold text-4xl md:text-6xl'>Contact Us</h1>
                 <div className='text-lg'>
                     <p>Got a question? Need help? Or just want to know more about our café?<br/>
                     We're always happy to hear from you!<br/><br/>
@@ -19,7 +19,7 @@ function Contact() {
                 </div>
                 </div>
                 <div>
-                <h2 className='mb-6 font-bold text-5xl'>Before You Contact Us</h2>
+                <h2 className='mb-6 font-bold text-3xl md:text-5xl'>Before You Contact Us</h2>
                 <p className='mb-4 text-lg'>You might find what you're looking for on our <Link to="/faq" className='text-blue-600 underline'>FAQ page</Link>, where we've answered common questions about:</p>
                 <ul className='space-y-2 ml-6 text-lg'>
                     <li>• Internet and PC usage</li>

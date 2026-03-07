@@ -68,7 +68,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void updatePassword(Long userId, String newPassword) {
+    public void updatePassword(Long userId,String oldPassword, String newPassword) {
+        Optional<UserModel> userModel = userRepository.findById(userId);
+        if(userModel.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        boolean isSamePassword = passwordEncoder.matches(oldPassword,userModel.get().getPassword());
+        if (!isSamePassword) {
+            throw new RuntimeException("Old password is incorrect");
+        }
+
         String encodedPassword = passwordEncoder.encode(newPassword);
         userRepository.updatePasswordById(userId, encodedPassword);
     }

@@ -1,4 +1,4 @@
-function Confirm({ show, onClose }) {
+function Confirm({ show, onClose, onConfirm }) {
   if (!show) return null;
   return (
     <div className="z-50 fixed inset-0 flex justify-center items-center bg-opacity-40">
@@ -12,7 +12,7 @@ function Confirm({ show, onClose }) {
         <div className="mb-6 text-gray-700 text-center">Are you sure you want to reserve these seats?</div>
         <div className="flex gap-4">
           <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded font-bold text-gray-700" onClick={onClose}>Cancel</button>
-          <button className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded font-bold text-white">Confirm</button>
+          <button className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded font-bold text-white" onClick={onConfirm}>Confirm</button>
         </div>
       </div>
     </div>

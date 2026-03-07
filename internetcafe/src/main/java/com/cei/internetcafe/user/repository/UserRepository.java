@@ -23,6 +23,7 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
     boolean existsByEmail(String email);
 
     boolean existsByIdAndRole(Long id, String role);
+    boolean existsByIdAndRoleIgnoreCase(Long id, String role);
 
 
     @Modifying

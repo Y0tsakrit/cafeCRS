@@ -10,6 +10,8 @@ import io.jsonwebtoken.Claims;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
@@ -41,5 +43,11 @@ public class PaymentController {
 
         return ResponseEntity.ok(resp);
 
+    }
+
+    @GetMapping("/status/{chargeId}")
+    public ResponseEntity<Map<String, String>> getStatus(@PathVariable String chargeId) {
+        String status = paymentService.getChargeStatus(chargeId);
+        return ResponseEntity.ok(Map.of("status", status));
     }
 }
