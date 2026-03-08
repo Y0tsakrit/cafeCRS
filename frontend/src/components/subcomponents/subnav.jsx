@@ -1,26 +1,38 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 function Subnav() {
+  const location = useLocation();
+
+  const navItem = (path, label) => (
+    <Link
+      to={path}
+      className={`px-4 py-2 rounded-xl text-sm font-medium transition
+      ${
+        location.pathname === path
+          ? "bg-[#8337D9] text-white"
+          : "text-gray-600 hover:bg-gray-200"
+      }`}
+    >
+      {label}
+    </Link>
+  );
+
   return (
-    <div className='flex flex-row md:flex-col gap-4 md:gap-8 bg-[#F5F5F5] md:p-9 px-4 py-3 border-[#F5F5F5] rounded-2xl md:min-w-35 text-center'>
-      <Link
-      to='/mainpage'
+    <div className="mt-4 px-2 md:px-4">
+      <div
+        className="flex flex-row md:flex-col gap-2 md:gap-3 
+        bg-[#F5F5F5] rounded-2xl 
+        px-3 py-3 md:px-5 md:py-6 
+        w-full md:w-48 
+        justify-center md:justify-start"
       >
-        Main Page
-      </Link>
-      <Link
-      to='/resetpassword'
-      >
-        Change Password
-      </Link>
-      <Link
-      to='/history'
-      >
-        History
-      </Link>
+        {navItem("/mainpage", "Main Page")}
+        {navItem("/resetpassword", "Change Password")}
+        {navItem("/history", "History")}
+      </div>
     </div>
-  )
+  );
 }
 
-export default Subnav
+export default Subnav;

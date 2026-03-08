@@ -42,26 +42,60 @@ useEffect(() => {
   fetchData();
 }, []);
   return (
-          <div className='flex md:flex-row flex-col justify-between self-center gap-4 bg-[#8337D9] mt-5 p-4 md:p-7 border rounded-xl w-[90%]'>
-        <div className=''>
-          <div className='text-white md:text-[40px] text-2xl'>Hello, {userFName} {userLName}!</div>
-          <div className='text-white md:text-[25px] text-lg'>{email}</div>
+    <div className="w-full flex justify-center mt-6 px-4">
+
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6
+      bg-[#8337D9] rounded-xl p-6 w-full max-w-[95%]">
+
+        {/* User Info */}
+        <div className="flex flex-col text-white">
+          <div className="text-2xl md:text-4xl font-semibold">
+            Hello, {userFName} {userLName}
+          </div>
+
+          <div className="text-sm md:text-lg opacity-90">
+            {email}
+          </div>
         </div>
-        <div className='flex flex-row flex-wrap self-center gap-4 md:gap-10'>
-            <Link to='/topup' className='flex flex-row items-center gap-4 md:gap-7 bg-white p-3 rounded-2xl'>
-                <div className='flex flex-col gap-2'>
-                    <div className='text-[#8337D9] md:text-[20px] text-base'>Balance</div>
-                    <div ><MdOutlineAccountBalanceWallet size='28' className="text-[#8337D9]"/></div>
-                </div>
-                <div className='text-[#8337D9] md:text-[50px] text-3xl'>{balance.toFixed(2)}</div>
-            </Link>
-            <div className='flex flex-row self-center bg-[#DA0000] p-3 border-[#DA0000] rounded-2xl cursor-pointer' onClick={(e) =>{localStorage.clear(); window.location.reload(true);}}>
-                <div><RiLogoutBoxRLine size='28' className="text-white"/></div>
-                <div className="text-white md:text-[20px] text-base">Logout</div>
+
+        {/* Actions */}
+        <div className="flex flex-row flex-wrap items-center gap-4 md:gap-6">
+
+          {/* Balance Card */}
+          <Link
+            to="/topup"
+            className="flex items-center gap-4 bg-white rounded-xl px-5 py-3
+            hover:shadow-md transition"
+          >
+            <div className="flex flex-col text-[#8337D9]">
+              <span className="text-sm font-medium">
+                Balance
+              </span>
+              <MdOutlineAccountBalanceWallet size={26} />
             </div>
+
+            <div className="text-2xl md:text-4xl font-bold text-[#8337D9]">
+              {balance.toFixed(2)}
+            </div>
+          </Link>
+
+          {/* Logout */}
+          <button
+            onClick={() => {
+              localStorage.clear();
+              window.location.reload();
+            }}
+            className="flex items-center gap-2 bg-[#DA0000] hover:bg-red-700
+            text-white rounded-xl px-4 py-3 transition"
+          >
+            <RiLogoutBoxRLine size={24} />
+            <span className="font-medium">Logout</span>
+          </button>
+
         </div>
       </div>
-  )
+    </div>
+  );
 }
 
-export default Dashbord
+export default Dashbord;

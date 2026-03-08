@@ -44,7 +44,7 @@ function Navbar() {
                         </Link>
                     ) : (
                         <Link to='/signin' onClick={() => setActivePage('')}
-                            className='hover:bg-white px-4 py-2 border-4 border-white rounded-lg text-white hover:text-[#8337D9] transition-colors'>
+                            className='hover:bg-white px-4 py-2 border-2 border-white rounded-lg text-white hover:text-[#8337D9] transition-colors'>
                             Sign In
                         </Link>
                     )}

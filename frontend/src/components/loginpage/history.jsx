@@ -44,15 +44,17 @@ function History() {
   }, []);
 
   return (
-    <div className='flex flex-col gap-4 bg-white p-5 min-h-screen'>
+    <div className="flex flex-col gap-6 bg-white min-h-screen">
       <Dashbord className="items-center"/>
-      <div className='flex md:flex-row flex-col gap-4 md:gap-8 px-2 md:px-4'>
+      <div className="flex md:flex-row flex-col gap-6 w-full max-w-[95%] mx-auto">
         <Subnav/>
         <div className='gap-4 md:gap-8 grid grid-cols-1 md:grid-cols-2 w-full'>
           <div className='mb-8'>
             <h2 className='mb-2 font-bold text-xl'>Reservation History</h2>
             {reservationHistory.length === 0 ? (
-              <div className='bg-gray-100 mb-2 p-4 rounded-lg'>No reservations found.</div>
+              <div className="bg-white border border-gray-200 p-6 rounded-2xl text-gray-400">
+                No reservations found.
+              </div>
             ) : (
               reservationHistory.slice(0, visibleCount).map((so) => (
                 <div key={so.id} className='flex justify-between bg-gray-100 mb-2 p-4 rounded-lg h-40'>
@@ -77,7 +79,9 @@ function History() {
           <div>
             <h2 className='mb-2 font-bold text-xl'>Food Order History</h2>
             {orderHistory.length === 0 ? (
-              <div className='bg-gray-100 mb-2 p-4 rounded-lg'>No food orders found.</div>
+              <div className="bg-white border border-gray-200 p-6 rounded-2xl text-gray-400">
+                No food orders found.
+              </div>
             ) : (
               orderHistory.map(o => (
                 <div key={o.orderId} className='bg-gray-100 mb-2 p-4 rounded-lg'>
