@@ -87,11 +87,12 @@ function Order() {
         orderList
       })
     })
-      .then(r => r.text())
-      .then(text => {
-        alert(text)
-        setCart({})
-      })
+    .then(r => r.text())
+    .then(text => {
+    alert(text)
+    setCart({})
+    window.location.href = "/mainpage";
+    })
       .catch(() =>
         alert('An error occurred. Please try again.')
       )

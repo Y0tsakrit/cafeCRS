@@ -84,7 +84,7 @@ const handleBooking = () => {
             setShowConfirm(false);
             if (text === 'Seat booked successfully.') {
                 alert('Booking confirmed!');
-                window.location.reload();
+                window.location.href("/mainpage");
                 setSelectedSeats([]);
             } else {
                 alert(text);
