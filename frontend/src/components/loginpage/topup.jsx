@@ -98,7 +98,7 @@ function Topup() {
   return (
     <div className='flex flex-col gap-4 bg-white h-screen'>
       <Dashbord className='items-center' />
-      <div className='flex flex-col gap-4 px-2 md:px-4 w-full md:w-[90%]'>
+      <div className='flex flex-col gap-4 px-2 md:px-4 w-full max-w-[1200px] mx-auto'>
         <div className='flex flex-col gap-4 w-full'>
           {AMOUNTS.map(item => (
             <div key={item.amount} className='flex flex-row justify-between items-center bg-linear-to-r from-purple-700 to-purple-600 shadow p-4 rounded-md'>

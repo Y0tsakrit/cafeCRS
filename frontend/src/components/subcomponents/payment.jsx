@@ -4,7 +4,7 @@ function Payment({ onContinue, selectedDate, startTime, endTime, selectedSeats =
   const hours = (selectedDate && startTime && endTime)
     ? Math.max(0, (new Date(`${selectedDate}T${endTime}:00`) - new Date(`${selectedDate}T${startTime}:00`)) / 3600000)
     : 0;
-  const unitPrice = hours * 60;
+  const unitPrice = hours * 200;
   const totalPrice = unitPrice * selectedSeats.length;
 
   const dateDisplay = selectedDate ? new Date(selectedDate).toLocaleDateString('en-GB') : '-';

@@ -57,7 +57,15 @@ function SubReserve() {
     };
     const handleConfirmClose = () => setShowConfirm(false);
 
-    const handleBooking = () => {
+const handleBooking = () => {
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('Please sign in to reserve seats.');
+        window.location.href = '/signin';
+        return;
+    }
         const seatIds = selectedSeats
             .map(name => parseInt(Object.keys(availableSeats).find(id => availableSeats[id] === name)))
             .filter(id => !isNaN(id));
@@ -67,7 +75,7 @@ function SubReserve() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ seatId: seatIds, dateStart, dateEnd })
         })
@@ -85,13 +93,9 @@ function SubReserve() {
         .catch(err => { console.error('Booking error:', err); alert('An error occurred. Please try again.'); });
     };
 
-
-
     const timeOptions = [];
-    for (let h = 0; h < 24; h++) {
-        for (const m of ['00', '15', '30', '45']) {
-            timeOptions.push(`${String(h).padStart(2, '0')}:${m}`);
-        }
+    for (let h = 8; h <= 22; h++) {
+        timeOptions.push(`${String(h).padStart(2, '0')}:00`);
     }
 
     const nowGMT7 = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
@@ -158,30 +162,56 @@ function SubReserve() {
               </div>
             </div>
             {/* Seat grid and privates */}
-            <div className="flex flex-col gap-2 w-full">
-              <div className="flex flex-row gap-2 mb-2 ml-20">
-                <div className="flex justify-center items-center bg-gray-200 border border-gray-300 rounded w-56 h-30 font-bold text-gray-600 text-xl">Private 1</div>
-                <div className="flex justify-center items-center bg-gray-200 border border-gray-300 rounded w-56 h-30 font-bold text-gray-600 text-xl">Private 2</div>
-              </div>
-              {/* Seat grid */}
-              <div className="flex flex-col w-full">
-                <div className="gap-3 grid grid-cols-8 w-full">
-                  {seatRows.map(row => seatCols.map(col => {
-                    const key = getSeatKey(row, col);
-                    const status = getSeatStatus(key);
-                    return (
-                      <div
-                        key={key}
-                        className={`w-16 h-12 rounded flex font-bold border-2 text-lg ${getSeatColor(status, key)} ${status === 'available' ? 'cursor-pointer hover:ring-2 ring-purple-400' : 'cursor-not-allowed opacity-60'}`}
-                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
-                        onClick={() => status === 'available' && toggleSeat(key)}
-                      >
-                        {key}
-                      </div>
-                    );
-                  }))}
+            <div className="flex flex-col w-full">
+            <div className="flex justify-center gap-6 mb-4">
+                <div className="flex justify-center items-center bg-gray-200 border border-gray-300 rounded w-56 h-32 font-bold text-gray-600 text-xl">
+                Private 1
                 </div>
-              </div>
+                <div className="flex justify-center items-center bg-gray-200 border border-gray-300 rounded w-56 h-32 font-bold text-gray-600 text-xl">
+                Private 2
+                </div>
+            </div>
+            {/* Seat grid */}
+            <div className="flex flex-col gap-4 w-full">
+            {seatRows.map(row => (
+                <div key={row} className="flex justify-center items-center">
+
+                {[0,1,2,3].map(group => (
+                    <div
+                    key={group}
+                    className={`flex gap-3 ${group !== 3 ? 'mr-16' : ''}`}
+                    >
+                    {seatCols.slice(group*2, group*2+2).map(col => {
+                        const key = getSeatKey(row, col);
+                        const status = getSeatStatus(key);
+
+                        return (
+                        <div
+                            key={key}
+                            className={`w-16 h-12 rounded flex font-bold border-2 text-lg
+                            ${getSeatColor(status, key)}
+                            ${status === 'available'
+                            ? 'cursor-pointer hover:ring-2 ring-purple-400'
+                            : 'cursor-not-allowed opacity-60'
+                            }`}
+                            style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            textAlign: 'center'
+                            }}
+                            onClick={() => status === 'available' && toggleSeat(key)}
+                        >
+                            {key}
+                        </div>
+                        );
+                    })}
+                    </div>
+                ))}
+
+                </div>
+            ))}
+            </div>
           </div>
         </div>
         <Payment

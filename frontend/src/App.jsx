@@ -19,6 +19,7 @@ import Homestaff from './components/staffpage/homestaff';
 import Editmenu from './components/staffpage/editmenu';
 import Manageacc from './components/staffpage/manageacc';
 import Viewstatus from './components/staffpage/viewstatus';
+import SubReserve from './components/subcomponents/subreserve';
 
 function AppContent() {
   const location = useLocation();
@@ -56,14 +57,15 @@ function AppContent() {
         <Route path='/resetpassword' element={<ProtectedRoute><Resetpassword/></ProtectedRoute>}/>
         <Route path='/history' element={<ProtectedRoute><History/></ProtectedRoute>}/>
         <Route path='/topup' element={<ProtectedRoute><Topup/></ProtectedRoute>}/>
-        <Route path='/reserve' element={<ProtectedRoute><Reserve/></ProtectedRoute>}/>
-        <Route path='/order' element={<ProtectedRoute><Order/></ProtectedRoute>}/>
 
         {/* staff page - protected */}
         <Route path='/staffhome' element={<ProtectedRoute><Homestaff/></ProtectedRoute>}/>
         <Route path='/staffmenu' element={<ProtectedRoute><Editmenu/></ProtectedRoute>}/>
         <Route path='/staffaccounts' element={<ProtectedRoute><Manageacc/></ProtectedRoute>}/>
         <Route path='/staffstatus' element={<ProtectedRoute><Viewstatus/></ProtectedRoute>}/>
+
+        <Route path='/order' element={<Order/>}/>
+        <Route path='/reserve' element={<SubReserve/>}/>
       </Routes>
     </>
   );
