@@ -57,12 +57,17 @@ function History() {
               </div>
             ) : (
               reservationHistory.slice(0, visibleCount).map((so) => (
-                <div key={so.id} className='flex justify-between bg-gray-100 mb-2 p-4 rounded-lg h-40'>
+                <div key={so.id} className='flex justify-between items-start bg-gray-50 hover:bg-gray-100 transition border border-gray-200 shadow-sm mb-3 p-5 rounded-xl'>
                   <div>
                     <div className='font-bold text-purple-700'>Date</div>
                     <div>{new Date(so.dateStart).toLocaleDateString()}</div>
+
                     <div className='font-bold text-purple-700'>Time</div>
-                    <div>{new Date(so.dateStart).toLocaleTimeString()} - {new Date(so.dateEnd).toLocaleTimeString()}</div>
+                    <div>
+                      {new Date(so.dateStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - 
+                      {new Date(so.dateEnd).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+
                     <div className='font-bold text-purple-700'>Seat</div>
                     <div>{so.seatName}</div>
                   </div>
@@ -85,10 +90,10 @@ function History() {
             ) : (
               orderHistory.map(o => (
                 <div key={o.orderId} className='bg-gray-100 mb-2 p-4 rounded-lg'>
-                  <div className='flex justify-between items-center gap-4 mb-1'>
+                  <div className='flex gap-4 mb-1'>
                     <span className='font-semibold'>Order #{o.orderId}</span>
                     <span className='font-bold text-purple-700'>{o.seatName}</span>
-                    <span className='text-gray-400 text-sm'>Reservation #{o.seatOrderId}</span>
+                    <span className='text-gray-400'>Reservation #{o.seatOrderId}</span>
                   </div>
                   <div className='mb-2 text-gray-500 text-sm'>{new Date(o.createdAt).toLocaleString()}</div>
                   <div className='mb-2'>
@@ -99,7 +104,10 @@ function History() {
                       </div>
                     ))}
                   </div>
-                  <div className='font-bold text-purple-700 text-right'>Total {o.totalPrice} THB</div>
+                  <div className="flex justify-between">
+                    <div className="font-bold text-purple-700">Total</div>
+                    <div className="font-bold text-purple-700">{o.totalPrice} THB</div>
+                  </div>
                 </div>
               ))
             )}
